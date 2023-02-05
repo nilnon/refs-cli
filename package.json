@@ -1,13 +1,13 @@
 {
-  "name": "refs-cli",
-  "version": "1.2.12",
+  "name": "refs-cli-nilnon",
+  "version": "1.2.17",
   "description": "Command line tool to generate Quick Reference website.",
-  "homepage": "https://jaywcjlove.github.io/refs-cli/",
-  "author": "jaywcjlove",
+  "homepage": "https://github.com/nilnon/",
+  "author": "nilnon",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "refs-cli": "./lib/cli.js"
+    "refs-cli-nilnon": "./lib/cli.js"
   },
   "scripts": {
     "build": "tsc",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jaywcjlove/refs-cli.git"
+    "url": "https://github.com/nilnon/refs-cli.git"
   },
   "keywords": [
     "reference-cli",
