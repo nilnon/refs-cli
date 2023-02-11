@@ -3,7 +3,7 @@ import { Element } from 'hast';
 
 export function htmlTagAddAttri(node: Element, { isHome }: Option) {
   if (node && node.tagName === 'html') {
-    node.properties['data-color-mode'] = 'dark';
+    node.properties['data-color-mode'] = 'light';
   }
   if (node && node.tagName === 'body' && isHome) {
     node.properties.class = ['home'];
