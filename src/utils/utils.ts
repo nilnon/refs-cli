@@ -16,6 +16,9 @@ export async function copyCSSFile(options: Options) {
 export async function copyJSFile(options: Options) {
   await fs.copy(path.resolve(options.static_path, './js'), path.resolve(options.output, 'js'));
 }
+export async function copySrcFile(basePath, options) {
+  await fs.copy(path.resolve(basePath, './files'), path.resolve(options.output, 'files'));
+}
 
 export interface Config {
   title?: string;
@@ -62,6 +65,7 @@ export async function run(options: Options) {
     await fs.writeFile(path.relative(options.output, 'data.json'), '[]');
     await copyCSSFile(options);
     await copyJSFile(options);
+    await copySrcFile(process.cwd(), options);
     await fs.writeFile(path.resolve(options.output, 'data.js'), `const REFS_DATA = []`);
     const files = await recursiveReaddirFiles(process.cwd(), {
       ignored: /[\\/](node_modules|\.git)/g,
@@ -110,13 +114,15 @@ export async function createHTML(files: IFileDirStat[] = [], opts: Options, num 
     data.path = path.relative(opts.output, outputHTMLPath).replace(/[\\/]/g, '/');
     searchData[options.filename] = data;
     searchData.name = options.filename;
-    await fs.writeJSON(SEARCH_DATA_CACHE, searchData);
-    const resultSearchData = Object.keys({ ...searchData })
-      .map((name) => searchData[name])
-      .filter((item) => typeof item !== 'string');
-    await fs.writeJSON(path.resolve(opts.output, 'data.json'), resultSearchData);
-    const SEARCH_DATA_JS = path.resolve(opts.output, 'data.js');
-    await fs.writeFile(SEARCH_DATA_JS, `const REFS_DATA = ${JSON.stringify(resultSearchData)}`);
+    if (data.name !== undefined) {
+      await fs.writeJSON(SEARCH_DATA_CACHE, searchData);
+      const resultSearchData = Object.keys({ ...searchData })
+        .map((name) => searchData[name])
+        .filter((item) => typeof item !== 'string');
+      await fs.writeJSON(path.resolve(opts.output, 'data.json'), resultSearchData);
+      const SEARCH_DATA_JS = path.resolve(opts.output, 'data.js');
+      await fs.writeFile(SEARCH_DATA_JS, `const REFS_DATA = ${JSON.stringify(resultSearchData)}`);
+    }
   }
   await fs.writeFile(outputHTMLPath, html);
   console.log(`♻️ \x1b[32;1m ${path.relative(opts.output, outputHTMLPath)} \x1b[0m`);
