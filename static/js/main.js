@@ -56,7 +56,11 @@ const searchMenu = document.getElementById('mysearch-menu');
 const searchContent = document.getElementById('mysearch-content');
 const isHome = document.body.classList.contains('home');
 function getDocUrl(url = '') {
-  return isHome ? url : url.replace('docs/', '');
+  let absPath = window.location.href;
+  let index = absPath.indexOf("/docs")
+  let basePath = absPath.substring(0, index+1)
+  return basePath + url;
+  // return isHome ? url : url.replace('docs/', '');
 }
 searchBtn.addEventListener('click', (ev) => {
   ev.preventDefault();
@@ -138,7 +142,8 @@ function searchResult(value) {
     const tags = (item.item.tags || []).join(',').replace(getValueReg(value), (txt) => {
       return `<mark>${txt}</mark>`;
     })
-    const href = isHome ? item.item.path : item.item.path.replace('docs/', '');
+    // const href = isHome ? item.item.path : item.item.path.replace('docs/', '');
+    const href = getDocUrl(item.item.path);
     if (idx === 0) {
       activeIndex = idx;
       activeMenu = item.item;
