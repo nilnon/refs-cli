@@ -148,7 +148,9 @@ export function create(str = '', options: Options = {}) {
             node.children = tocsData;
           }
           node.children.unshift(header(options));
-          node.children.push(footer(options));
+          if (!options.isHome) {
+            node.children.push(footer(options));
+          }
           node.children = node.children.concat(search(options));
         }
       }
